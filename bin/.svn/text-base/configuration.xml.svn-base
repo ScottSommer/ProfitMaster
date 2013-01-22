@@ -1,0 +1,13 @@
+<beans:beans 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="locations">
+            <beans:list>
+                <beans:value>classpath:jdbc.properties</beans:value>                
+            </beans:list>
+        </beans:property>
+    </beans:bean>	
+</beans:beans>	

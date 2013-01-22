@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/JointsCatalogue/!svn/ver/3/trunk/resources
+END
+hibernate.xml
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/JointsCatalogue/!svn/ver/63/trunk/resources/hibernate.xml
+END
+transaction.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/JointsCatalogue/!svn/ver/63/trunk/resources/transaction.xml
+END
+configuration.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/JointsCatalogue/!svn/ver/3/trunk/resources/configuration.xml
+END
+datasource.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/JointsCatalogue/!svn/ver/63/trunk/resources/datasource.xml
+END
+jdbc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/JointsCatalogue/!svn/ver/80/trunk/resources/jdbc.properties
+END

@@ -1,0 +1,34 @@
+<beans:beans 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+ 	<beans:bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+	    <beans:property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <beans:property name="url" value="${jdbc.url}"/>
+	    <beans:property name="username" value="${jdbc.username}"/>
+	    <beans:property name="password" value="${jdbc.password}"/>
+	    <beans:property name="maxActive" value="${jdbc.maxActive}"/>
+		<beans:property name="maxIdle" value="${jdbc.maxIdle}"/>
+		<beans:property name="maxWait" value="${jdbc.maxWait}"/>
+		<beans:property name="removeAbandoned" value="${jdbc.removeAbandoned}"/>
+		<beans:property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>
+		<beans:property name="logAbandoned" value="${jdbc.logAbandoned}"/>	    	  
+	</beans:bean>
+	
+	<!-- 	
+ 	<beans:bean class="org.apache.commons.dbcp.BasicDataSource" id="ds2">
+	    <beans:property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <beans:property name="url" value="jdbc:jtds:sqlserver://dmac-njrrdev;databaseName=lportal;TDS=8.0"/>
+	    <beans:property name="username" value="${jdbc.username}"/>
+	    <beans:property name="password" value="${jdbc.password}"/>
+	    <beans:property name="maxActive" value="${jdbc.maxActive}"/>
+		<beans:property name="maxIdle" value="${jdbc.maxIdle}"/>
+		<beans:property name="maxWait" value="${jdbc.maxWait}"/>
+		<beans:property name="removeAbandoned" value="${jdbc.removeAbandoned}"/>
+		<beans:property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>
+		<beans:property name="logAbandoned" value="${jdbc.logAbandoned}"/>	    	  
+	</beans:bean>
+	 -->
+	
+</beans:beans>	

@@ -1,0 +1,39 @@
+# Properties file with JDBC and JPA settings.
+#-------------------------------------------------------------------------------
+# Hibernate
+hibernate.generate_statistics=true
+hibernate.show_sql=true
+hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+
+				  
+#connection config
+#-------------------------------------------------------------------------------
+jdbc.driverClassName=net.sourceforge.jtds.jdbc.Driver
+#jdbc.url=jdbc:jtds:sqlserver://DMC-SERVER-XV;databaseName=NJRR;TDS=8.0
+jdbc.url=jdbc:jtds:sqlserver://dmac-njrrdev;databaseName=NJRR_v2;TDS=8.0
+#// (dmac-njrrdev)
+#jdbc.username=sdalton
+#jdbc.password=dev
+jdbc.username=sa
+jdbc.password=kub@nC1g@r
+
+jdbc.maxActive=5
+jdbc.maxIdle=10
+jdbc.maxWait=10000
+jdbc.removeAbandoned=true
+jdbc.removeAbandonedTimeout=60
+jdbc.logAbandoned=true
+
+
+# Properties that control the population of schema and data for a new data source
+#-------------------------------------------------------------------------------
+#jdbc.initLocation=classpath:db/postgresql/initDB.txt
+#jdbc.dataLocation=classpath:db/postgresql/populateDB.txt
+
+
+# Property that determines which JPA DatabasePlatform to use with TopLink Essentials
+#-------------------------------------------------------------------------------
+#jpa.databasePlatform=org.springframework.samples.petclinic.toplink.EssentialsHSQLPlatformWithNativeSequence
+#jpa.showSql=true
+# Property that determines which database to use with an AbstractJpaVendorAdapter
+#jpa.database=HSQL
