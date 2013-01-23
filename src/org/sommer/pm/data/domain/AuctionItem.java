@@ -27,6 +27,9 @@ public class AuctionItem implements Serializable {
 	private Long item;
 	private Long buyout;
 	private Long bid;
+	private String seller;
+	private TimeLeft timeLeft;
+	private Long quantity;
 	
 	@GeneratedValue
 	@Id
@@ -54,10 +57,36 @@ public class AuctionItem implements Serializable {
 	public void setBid(Long bid) {
 		this.bid = bid;
 	}
+	
+	@Column(name="Seller")
+	public String getSeller() {
+		return seller;
+	}
+	public void setSeller(String seller) {
+		this.seller = seller;
+	}
+	
+	@Column(name="TimeLeft")
+	public TimeLeft getTimeLeft() {
+		return timeLeft;
+	}
+	public void setTimeLeft(TimeLeft timeLeft) {
+		this.timeLeft = timeLeft;
+	}
+	
+	@Column(name="Quantity")
+	public Long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+	
 	@Override
 	public String toString() {
-		return "AuctionItem [item=" + item + ", buyout=" + Util.humaniseAmount(buyout) + ", bid="
-				+ Util.humaniseAmount(bid) + "]";
+		return "AuctionItem [item=" + item + ", buyout=" + buyout + ", bid="
+				+ bid + ", seller=" + seller + ", timeLeft=" + timeLeft
+				+ ", quantity=" + quantity + "]";
 	}
-
+	
 }

@@ -1,10 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util-2.5.xsd"
     default-autowire="byName">
     
     <context:component-scan base-package="org.sommer.pm"/>
@@ -22,5 +25,28 @@
             </list>
         </property>
     </bean>	
+    
+    <bean id="short" class="org.sommer.pm.data.domain.TimeLeft">
+    	<property name="description" value="SHORT"/>
+    </bean>
+    
+    <bean id="medium" class="org.sommer.pm.data.domain.TimeLeft">
+    	<property name="description" value="MEDIUM"/>
+    </bean>
+    
+    <bean id="long" class="org.sommer.pm.data.domain.TimeLeft">
+    	<property name="description" value="LONG"/>
+    </bean>
+    
+    <bean id="veryLong" class="org.sommer.pm.data.domain.TimeLeft">
+    	<property name="description" value="VERY_LONG"/>
+    </bean>
+    
+	<util:list id="timeLeftlist" value-type="org.sommer.pm.data.domain.TimeLeft">
+	    <ref bean="short"/>
+	    <ref bean="medium"/>
+	    <ref bean="long"/>
+	    <ref bean="veryLong"/>
+	</util:list>
 </beans>	
 

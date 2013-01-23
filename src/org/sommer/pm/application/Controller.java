@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
@@ -16,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sommer.pm.data.domain.AuctionItem;
+import org.sommer.pm.data.domain.TimeLeft;
 import org.sommer.pm.data.service.specification.AuctionItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,19 +48,38 @@ public class Controller {
 	static int bufferSize = 8192;
 	
 	@Autowired AuctionItemService aiService;
+	
+	@Autowired List<TimeLeft> timeLeftArray;
 
 	private ServiceRegistry serviceRegistry = null;
+	
+	private SessionFactory sessionFactory = null;
 
 	private SessionFactory configureSessionFactory() throws HibernateException {
-	    Configuration configuration = new Configuration();
-	    configuration.configure();
-	    serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
-	    return configuration.buildSessionFactory(serviceRegistry);
+		if(sessionFactory == null) {
+		    Configuration configuration = new Configuration();
+		    configuration.configure();
+		    serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
+		    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		}
+		
+		return sessionFactory;
+	}
+	
+	public void initialize() {
+		Session session = this.configureSessionFactory().getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		for(TimeLeft timeLeft : timeLeftArray) {
+			session.save(timeLeft);
+		}
+		transaction.commit();
 	}
 	
 	public void start() {
 		// TODO Auto-generated method stub
 //		HTTPRequestPoster http = new HTTPRequestPoster();
+		
+		initialize();
 		
 		boolean fromWeb = false;
 		
@@ -96,6 +119,8 @@ public class Controller {
 			List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
 
 			SessionFactory sessionFactory = this.configureSessionFactory();
+			Session session = sessionFactory.getCurrentSession();
+			Transaction transaction = session.beginTransaction();
 			for(Object aucObj : auctions) {
 				JSONObject auction = (JSONObject) aucObj;
 				
@@ -104,12 +129,27 @@ public class Controller {
 				ai.setItem(Long.valueOf(auction.get("item").toString()));
 				ai.setBuyout(Long.valueOf(auction.get("buyout").toString()));
 				ai.setBid(Long.valueOf(auction.get("bid").toString()));
+				ai.setSeller(auction.get("owner").toString());
+				ai.setQuantity(Long.valueOf(auction.get("quantity").toString()));
+				ai.setTimeLeft(getTimeLeftFromString(auction.get("timeLeft").toString()));
 				
 				auctionItems.add(ai);
-				aiService.createAuctionItem(ai);
+//				aiService.createAuctionItem(ai);
+				session.save(ai);
 			}
+			transaction.commit();
 			
 			System.out.println("Auctions scanned: "+auctionItems.size());
+
+			session = sessionFactory.getCurrentSession();
+			transaction = session.beginTransaction();
+			
+			Criteria crit = session.createCriteria(AuctionItem.class);
+			List<AuctionItem> dbAuctions = crit.list();
+			
+			for(AuctionItem dbAuction : dbAuctions) {
+				System.out.println(dbAuction.getBuyout());
+			}
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -119,6 +159,17 @@ public class Controller {
 			e.printStackTrace();
 		}
 		
+		
+	}
+	
+	private TimeLeft getTimeLeftFromString(String string) {
+		for(TimeLeft timeLeft : timeLeftArray) {
+			if(timeLeft.getDescription().equals(string)) {
+				return timeLeft;
+			}
+		}
+		
+		return null;
 	}
 	
 	public String readFile( String file ) throws IOException {
