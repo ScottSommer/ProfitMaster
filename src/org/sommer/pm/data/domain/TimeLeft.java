@@ -16,11 +16,6 @@ import org.sommer.pm.application.Util;
 @Table(name="TimeLeft")
 public class TimeLeft implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7443262119653998006L;
-	
 	private Long id;
 	private String description;
 	

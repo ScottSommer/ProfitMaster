@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -19,8 +20,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sommer.pm.data.domain.AuctionItem;
+import org.sommer.pm.data.domain.Snapshot;
 import org.sommer.pm.data.domain.TimeLeft;
 import org.sommer.pm.data.service.specification.AuctionItemService;
+import org.sommer.pm.util.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,8 +55,9 @@ public class Controller {
 	@Autowired List<TimeLeft> timeLeftArray;
 
 	private ServiceRegistry serviceRegistry = null;
-	
-	private SessionFactory sessionFactory = null;
+
+	@Autowired private SessionFactory sessionFactory;
+//	private SessionFactory sessionFactory = null;
 
 	private SessionFactory configureSessionFactory() throws HibernateException {
 		if(sessionFactory == null) {
@@ -94,19 +98,21 @@ public class Controller {
 				filesStr = readFile(filesCache);
 			}
 			
-			JSONObject jsonFiles;
-			jsonFiles = new JSONObject(filesStr);
-			JSONArray innerJson = (JSONArray) jsonFiles.get("files");
-
-//			innerJson.get(0);
-			String ahUrl = (String)((JSONObject) innerJson.get(0)).get("url");
+//			JSONObject jsonFiles;
+//			jsonFiles = new JSONObject(filesStr);
+//			JSONArray innerJson = (JSONArray) jsonFiles.get("files");
+//
+//			String ahUrl = (String)((JSONObject) innerJson.get(0)).get("url");
 			
-			System.out.println("Fetching AH data: " + ahUrl);
+			Snapshot snapshot = JsonParser.parseFilesString(filesStr);
+			saveObject(snapshot);
+			
+			System.out.println("Fetching AH data: " + snapshot.getUrl());
 
 			String ahStr = null;
 			
 			if(fromWeb) {
-				ahStr = HTTPRequestPoster.sendGetRequest(ahUrl, null);
+				ahStr = HTTPRequestPoster.sendGetRequest(snapshot.getUrl(), null);
 				writeFile(ahCache, ahStr);
 			} else {
 				ahStr = readFile(ahCache);
@@ -118,9 +124,9 @@ public class Controller {
 			
 			List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
 
-			SessionFactory sessionFactory = this.configureSessionFactory();
-			Session session = sessionFactory.getCurrentSession();
-			Transaction transaction = session.beginTransaction();
+//			final SessionFactory sessionFactory = this.configureSessionFactory();
+//			Session session = sessionFactory.getCurrentSession();
+//			Transaction transaction = session.beginTransaction();
 			for(Object aucObj : auctions) {
 				JSONObject auction = (JSONObject) aucObj;
 				
@@ -135,16 +141,17 @@ public class Controller {
 				
 				auctionItems.add(ai);
 //				aiService.createAuctionItem(ai);
-				session.save(ai);
+//				session.save(ai);
 			}
-			transaction.commit();
+			saveObjects(auctionItems);
+//			transaction.commit();
 			
 			System.out.println("Auctions scanned: "+auctionItems.size());
 
-			session = sessionFactory.getCurrentSession();
-			transaction = session.beginTransaction();
+//			session = sessionFactory.getCurrentSession();
+//			transaction = session.beginTransaction();
 			
-			Criteria crit = session.createCriteria(AuctionItem.class);
+			Criteria crit = createCriteria(AuctionItem.class);
 			List<AuctionItem> dbAuctions = crit.list();
 			
 			for(AuctionItem dbAuction : dbAuctions) {
@@ -160,6 +167,43 @@ public class Controller {
 		}
 		
 		
+	}
+	
+	private Criteria createCriteria(Class clazz) {
+		final Session session = this.configureSessionFactory().getCurrentSession();
+		return session.createCriteria(clazz);
+	}
+
+	private void saveObject(Object object) {
+		final Session session = this.configureSessionFactory().getCurrentSession();
+		final Transaction transaction = session.beginTransaction();
+		
+		session.save(object);
+		
+		transaction.commit();
+	}
+
+	//TODO: Merge with Collection overload.
+	private void saveObjects(Object[] objects) {
+		final Session session = this.configureSessionFactory().getCurrentSession();
+		final Transaction transaction = session.beginTransaction();
+		
+		for(Object object : objects) {
+			session.save(object);
+		}
+		
+		transaction.commit();
+	}
+	
+	private void saveObjects(Collection<?> objects) {
+		final Session session = this.configureSessionFactory().getCurrentSession();
+		final Transaction transaction = session.beginTransaction();
+		
+		for(Object object : objects) {
+			session.save(object);
+		}
+		
+		transaction.commit();
 	}
 	
 	private TimeLeft getTimeLeftFromString(String string) {

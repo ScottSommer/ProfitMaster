@@ -36,6 +36,8 @@
 
 		<mapping class="org.sommer.pm.data.domain.AuctionItem" />
 		<mapping class="org.sommer.pm.data.domain.TimeLeft" />
+		<mapping class="org.sommer.pm.data.domain.LastModified" />
+		<mapping class="org.sommer.pm.data.domain.Snapshot" />
 		
 	</session-factory>
 

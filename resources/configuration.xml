@@ -13,8 +13,8 @@
     <context:component-scan base-package="org.sommer.pm"/>
     
 	<import resource="classpath:datasource.xml"/>
+	<!-- <import resource="classpath:transaction.xml"/> -->
 	<import resource="classpath:hibernate.xml"/>
-	<import resource="classpath:transaction.xml"/>
     
     <bean class="org.sommer.pm.application.Main"/>
     

@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
-import org.sommer.pm.application.Util;
 
 @Entity(name="AuctionItem")
 @Table(name="Auction")
@@ -19,11 +18,6 @@ import org.sommer.pm.application.Util;
 //@Scope("prototype")
 public class AuctionItem implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7443262119653998006L;
-	
 	private Long item;
 	private Long buyout;
 	private Long bid;

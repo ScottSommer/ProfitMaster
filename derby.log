@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Wed Jan 23 22:04:08 CST 2013:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013c-672f-c158-0000060167b0 
-on database directory C:\Development\Archive_121021\myworkspace\ProfitMaster\data  with class loader sun.misc.Launcher$AppClassLoader@553f5d07 
+Thu Jan 24 08:43:44 CST 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013c-6979-5530-00000663eb78 
+on database directory C:\Development\Archive_121021\myworkspace\ProfitMaster\data  with class loader sun.misc.Launcher$AppClassLoader@138d107f 
 Loaded from file:/C:/Development/Archive_121021/myworkspace/ProfitMaster/lib/derby.jar
 java.vendor=Sun Microsystems Inc.
 java.runtime.version=1.6.0_25-b06
