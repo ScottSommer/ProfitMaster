@@ -39,14 +39,14 @@ public class Controller {
 //	URL = host + "/api/wow/item/" + ItemId
 	static final String ITEM_PATH = "/api/wow/item/";
 
-	static String filesCache = "C:\\Users\\Scott\\Desktop\\dreadmaul";
+	static String filesCache = "C:\\temp\\dreadmaul";
 	static String getFilesUrl = "http://us.battle.net/api/wow/auction/data/" + realm;
 
-	static String ahCache = "C:\\Users\\Scott\\Desktop\\auctions.json";
+	static String ahCache = "C:\\temp\\auctions.json";
 
-	static String silverleafCache = "C:\\Users\\Scott\\Desktop\\silverleaf.json";
+	static String silverleafCache = "C:\\temp\\silverleaf.json";
 
-	static String perditionsCache = "C:\\Users\\Scott\\Desktop\\perditionsblade.json";
+	static String perditionsCache = "C:\\temp\\perditionsblade.json";
 	
 	static int bufferSize = 8192;
 	
@@ -171,6 +171,7 @@ public class Controller {
 	
 	private Criteria createCriteria(Class clazz) {
 		final Session session = this.configureSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		return session.createCriteria(clazz);
 	}
 

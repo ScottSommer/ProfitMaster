@@ -9,9 +9,12 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.ProtocolException;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.Proxy.Type;
 
 public class HTTPRequestPoster {
 	/**
@@ -37,8 +40,18 @@ public class HTTPRequestPoster {
 				if (requestParameters != null && requestParameters.length() > 0) {
 					urlStr += "?" + requestParameters;
 				}
+
 				URL url = new URL(urlStr);
-				URLConnection conn = url.openConnection();
+				URLConnection conn;
+				if(false) {
+					String proxyHost = "192.168.105.2";
+					int proxyPort = 3128;
+					Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+					conn = url.openConnection(proxy);
+				} else {
+					conn = url.openConnection();
+				}
+				
 				// Get the response
 				BufferedReader rd = new BufferedReader(new InputStreamReader(
 						conn.getInputStream()));

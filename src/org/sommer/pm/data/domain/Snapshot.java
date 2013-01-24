@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenerationTime;
 @Table(name="Snapshot")
 public class Snapshot implements Serializable {
 	
-	private BigInteger id;
+	private Long id;
 	private String url;
 	private BigInteger lastModified;
 
@@ -24,10 +24,10 @@ public class Snapshot implements Serializable {
 	@Id
 	@Generated(GenerationTime.ALWAYS)
 	@Column(name="ID")
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
