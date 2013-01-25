@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenerationTime;
 //@Scope("prototype")
 public class AuctionItem implements Serializable {
 
-	private Long item;
+	private Integer item;
 	private Long buyout;
 	private Long bid;
 	private String seller;
@@ -29,10 +29,10 @@ public class AuctionItem implements Serializable {
 	@Id
 	@Generated(GenerationTime.ALWAYS)
 	@Column(name="ID")
-	public Long getItem() {
+	public Integer getItem() {
 		return item;
 	}
-	public void setItem(Long item) {
+	public void setItem(Integer item) {
 		this.item = item;
 	}
 

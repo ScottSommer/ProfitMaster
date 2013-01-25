@@ -16,6 +16,9 @@
 	<!-- <import resource="classpath:transaction.xml"/> -->
 	<import resource="classpath:hibernate.xml"/>
     
+    <!-- ADDITIONAL BEANS -->
+	<import resource="filters/filters.xml"/>
+    
     <bean class="org.sommer.pm.application.Main"/>
     
    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

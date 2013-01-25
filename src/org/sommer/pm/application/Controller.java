@@ -23,11 +23,13 @@ import org.sommer.pm.data.domain.AuctionItem;
 import org.sommer.pm.data.domain.Snapshot;
 import org.sommer.pm.data.domain.TimeLeft;
 import org.sommer.pm.data.service.specification.AuctionItemService;
+import org.sommer.pm.data.service.specification.FilterService;
 import org.sommer.pm.util.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import HTTPUtil.HTTPRequestPoster;
+import au.com.sommer.common.filter.ValueFilter;
 
 @Component
 public class Controller {
@@ -53,6 +55,8 @@ public class Controller {
 	@Autowired AuctionItemService aiService;
 	
 	@Autowired List<TimeLeft> timeLeftArray;
+	
+	@Autowired FilterService filterService;
 
 	private ServiceRegistry serviceRegistry = null;
 
@@ -132,7 +136,7 @@ public class Controller {
 				
 				AuctionItem ai = new AuctionItem();
 
-				ai.setItem(Long.valueOf(auction.get("item").toString()));
+				ai.setItem(Integer.valueOf(auction.get("item").toString()));
 				ai.setBuyout(Long.valueOf(auction.get("buyout").toString()));
 				ai.setBid(Long.valueOf(auction.get("bid").toString()));
 				ai.setSeller(auction.get("owner").toString());
@@ -153,10 +157,22 @@ public class Controller {
 			
 			Criteria crit = createCriteria(AuctionItem.class);
 			List<AuctionItem> dbAuctions = crit.list();
+			List<AuctionItem> shortItems = new ArrayList<AuctionItem>();
 			
 			for(AuctionItem dbAuction : dbAuctions) {
 				System.out.println(dbAuction.getBuyout());
+				
+				for(ValueFilter filter : filterService.getValueFilters()) {
+					if(filter.passesFilter(dbAuction.getTimeLeft())) {
+						shortItems.add(dbAuction);
+					}
+				}
 			}
+			
+			for(AuctionItem shortItem : shortItems) {
+				System.out.println(shortItem.toString());
+			}
+			System.out.println(shortItems.size() + " total auctions with SHORT duration.");
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
